@@ -25,10 +25,5 @@ class Queue:
 
 	def list(self):
 		queue_list = []
-		copy_queue = self.queue
-		while len(copy_queue) != 0:
-			element = copy_queue[-1]
-			queue_list.append(element)
-			copy_queue.pop()
-		
+		queue_list = list(self.queue)
 		return queue_list

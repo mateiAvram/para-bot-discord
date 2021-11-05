@@ -66,7 +66,7 @@ async def on_voice_state_update(member, before, after):
 				if voice_client.guild == member.guild:
 					await voice_client.disconnect()
 					return
-					
+
 # bot_commands
 @client.command()
 async def clear(ctx, argc = None):
@@ -130,7 +130,7 @@ async def play(ctx, argc = None):
 		await ctx.send("You must be in the same voice channel as me to use that command")
 		print('{0}: {1} is not in the same voice channel'.format(client.user, user))
 		return
-	
+
 	if argc is None:
 		await ctx.send("No song was mentioned")
 		print('{0}: no url was passed'.format(client.user))
@@ -213,8 +213,9 @@ async def skip(ctx):
 		if not voice_client.is_playing():
 			await ctx.send("Nothing to skip")
 			print('{0}: nothing to skip'.format(client.user))
+			return
 
-	voice_client.stop()
+	voice_client.pause()
 	await ctx.send('{0} skipped the song'.format(ctx.author))
 	await play_song(ctx, voice_client)
 	pass
@@ -223,19 +224,20 @@ async def skip(ctx):
 async def queue(ctx):
 	song_list = song_queue.list()
 	song_titles_list = song_titles.list()
+	print(song_titles_list)
 	song_urls_list = song_urls.list()
 
 	if len(song_list) == 0:
 		await ctx.send("Nothing in queue")
 		print('{0}: Nothing in queue'.format(client.user))
 		return
-	
+
 	print('{0}: Printing song queue'.format(client.user))
 
 	output = ""
 	for count in range(0, len(song_list)):
-		output = str(count + 1) + ". " + str(song_titles_list[count]) + "\nURL: " + str(song_urls_list[count]) + "\n"
-	
+		output = output + str(count + 1) + ". " + str(song_titles_list[-(count + 1)]) + "\nURL: " + str(song_urls_list[-(count + 1)]) + "\n"
+
 	await ctx.send("```" + output + "```")
 	pass
 
@@ -256,7 +258,7 @@ async def empty(ctx):
 	await ctx.send('{0} emptied song queue'.format(ctx.author))
 	print('{0}: {1}: emptied song queue'.format(client.user, ctx.author))
 	pass
-	
+
 
 @client.command()
 async def leave(ctx):
