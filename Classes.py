@@ -24,5 +24,6 @@ class Queue:
 			self.queue.pop()
 
 	def list(self):
+		queue_list = []
 		queue_list = list(self.queue)
 		return queue_list
